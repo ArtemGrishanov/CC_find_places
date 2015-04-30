@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+    <script>
+        function loadCities(url) {
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.onreadystatechange = function()
+            {
+                if (xmlhttp.readyState==4 && xmlhttp.status==200)
+                {
+                    var lines = xmlhttp.responseText.split('\n');
+                    var cities = '';
+                    for (var i = 0; i < lines.length; i++) {
+                        if (lines[i]) {
+                            // выбрать широту и долготу
+                            var m = lines[i].match(/([-|\d|\.]+)\t([-|\d|\.]+)/);
+                            var n = lines[i].match(/[\d]+\t([\w|\u0020]+)/);
+                            if (m[1] && m[2] && n[1]) {
+                                cities += (n[1] + ' ' + m[1] + ' ' + m[2] + '\n');
+                            }
+                        }
+                    }
+                    console.log(cities);
+                }
+            }
+            xmlhttp.open("GET", 'http://localhost:63342/find_place/assets/cities15000.txt', true);
+            xmlhttp.send();
+        }
+    </script>
+</body>
+</html>
