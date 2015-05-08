@@ -2,8 +2,79 @@
 <html>
 <head>
     <title></title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .map {
+            position: absolute;
+            top: 0;
+            left: 0;
+            background: url(i/map_950.png);
+            width: 950px;
+            height: 480px;
+        }
+        /*.pointer {*/
+            /*position: absolute;*/
+            /*top: 0;*/
+            /*left: 0;*/
+            /*width: 30px;*/
+            /*height: 38px;*/
+            /*background: url(../assets/pin.png);*/
+        /*}*/
+        .container {
+            position: relative;
+        }
+        .input_wrapper {
+            position: absolute;
+            left: 10px;
+            top: 10px;
+            width: 200px;
+            height: 70px;
+            color: #fff;
+        }
+        .city_input {
+            width: 200px;
+            height: 20px;
+        }
+        .city_select {
+            width: 200px;
+            height: 20px;
+        }
+        .show_cnt {
+            margin-top: 7px;
+        }
+        .btn {
+            padding: 5px 7px 5px 7px;
+            color: #FFF;
+            font-size: 14px;
+            background-color: #8AC007;
+            text-align: center;
+            display-inline: block;
+            border-radius: 5px;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
+    <div class="container">
+        <div class="map"></div>
+        <div id="id-pointer" class="pointer" style="display:none;"></div>
+        <div class="input_wrapper">
+            <div>
+                <form>
+                    <input id="id-input_city" class="city_input" type="text" name="city">
+                    <select id="id-select_city" class="city_select" style="display: none;">
+                    </select>
+                </form>
+            </div>
+            <div class="show_cnt">
+                <span id="id-show" class="btn">Show</span>
+            </div>
+        </div>
+    </div>
+
     <script>
         var cities = [];
 

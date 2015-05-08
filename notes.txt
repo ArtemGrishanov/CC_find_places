@@ -50,3 +50,8 @@ document.getElementById('id-pointer').style.left = (c.x - pointerWidth/2) + 'px'
 - Split
 - Javascript 'For'
 - Chrome Development Tools
+- html forms
+- html input
+- html select
+- css Кнопки
+- css position
