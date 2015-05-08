@@ -41,3 +41,12 @@ document.getElementById('id-pointer').style.left = c.x + 'px';
 Ответ:
 document.getElementById('id-pointer').style.top = (c.y - pointerHeight) + 'px';
 document.getElementById('id-pointer').style.left = (c.x - pointerWidth/2) + 'px';
+
+
+- XMLHttpRequest
+- Javascript Functions
+- Arrays
+- Object
+- Split
+- Javascript 'For'
+- Chrome Development Tools

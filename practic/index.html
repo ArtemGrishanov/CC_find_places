@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+    <script>
+        var cities = [];
+
+        function loadCities() {
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.onreadystatechange = function()
+            {
+                if (xmlhttp.readyState==4 && xmlhttp.status==200)
+                {
+                    var lines = xmlhttp.responseText.split('\n');
+                    for (var i = 0; i < lines.length; i++) {
+                        var splitted = lines[i].split('#');
+                        var obj = {
+                            name: splitted[0],
+                            latitude: parseInt(splitted[1]),
+                            longitude: parseInt(splitted[2]),
+                            location: splitted[3]
+                        };
+                        cities.push(obj);
+                    }
+                }
+            }
+            xmlhttp.open("GET", 'http://localhost:63342/find_place/practic/cities.txt');
+            xmlhttp.send();
+        }
+
+        loadCities();
+    </script>
+</body>
+</html>
