@@ -14,14 +14,19 @@
             width: 950px;
             height: 480px;
         }
-        /*.pointer {*/
-            /*position: absolute;*/
-            /*top: 0;*/
-            /*left: 0;*/
-            /*width: 30px;*/
-            /*height: 38px;*/
-            /*background: url(../assets/pin.png);*/
-        /*}*/
+        .pointer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 30px;
+            height: 38px;
+            background: url(../assets/pin.png);
+        }
+        .pointer.__stub {
+            background: #000;
+            width: 5px;
+            height: 5px;
+        }
         .container {
             position: relative;
         }
@@ -65,18 +70,99 @@
             <div>
                 <form>
                     <input id="id-input_city" class="city_input" type="text" name="city">
-                    <select id="id-select_city" class="city_select" style="display: none;">
+                    <select id="id-select_city" class="city_select" style="display: none;" onchange="onSelectChange()">
                     </select>
                 </form>
             </div>
             <div class="show_cnt">
-                <span id="id-show" class="btn">Show</span>
+                <span id="id-show" class="btn" onclick="onShowClick()">Show</span>
             </div>
         </div>
     </div>
 
     <script>
-        var cities = [];
+        var cities = [],
+            mapHeight = 480;
+            mapWidth = 950,
+            pointer = null,
+            pointerWidth = 30,
+            pointerHeight = 38,
+            input = null,
+            select = null,
+            searchResult = null;
+
+        /**
+         * Поиск и отображени результатов на карте
+         */
+        function onShowClick() {
+            // получить значение из value
+            var val = input.value;
+            // очищаем select
+            select.innerHTML = '';
+            // ищем и сохраняем результат, он еще может понадобится
+            searchResult = findCity(val);
+            if (searchResult.length > 0) {
+                // есть по крайней мере один результат
+                show(searchResult[0].latitude, searchResult[0].longitude);
+                if (searchResult.length > 1) {
+                    // есть несколько вариантов - показать список с выбором
+                    select.style.display = 'block';
+                    pointer.style.display = 'block';
+
+                    // создаем выбор внутри элемента select для каждого наденного результата
+                    for (var i = 0; i < searchResult.length; i++) {
+                        var opt = document.createElement('option');
+                        opt.value = i;
+                        opt.innerHTML = searchResult[i].location;
+                        select.appendChild(opt);
+                    }
+                }
+                else {
+                    // скрыть список с выбором, так как результат один
+                    select.style.display = 'none';
+                    pointer.style.display = 'none';
+                }
+            }
+            else {
+                // ничего не найдено
+                select.style.display = 'none';
+                pointer.style.display = 'none';
+            }
+        }
+
+        function onSelectChange() {
+            show(searchResult[select.value].latitude, searchResult[select.value].longitude);
+        }
+
+        /**
+         * Поиск города по имени в массиве cities
+         * @param name - название искомого города
+         */
+        function findCity(name) {
+            var result = [];
+            for (var i = 0; i < cities.length; i++) {
+                if (cities[i].name == name) {
+                    result.push(cities[i]);
+                }
+            }
+            return result;
+        }
+
+        /**
+         * @param latitude - широта [-90..90] (будем переводить в y на карте)
+         * @param longitude - долгота [-180..180] (будем переводить в x на карте)
+         */
+        function show(latitude, longitude) {
+            var x, y = 0;
+            latitude+=90;
+            y = mapHeight-(latitude*mapHeight)/180;
+
+            longitude+=180;
+            x = (longitude*mapWidth)/360;
+            pointer.style.top = (y - pointerHeight) + 'px';
+            pointer.style.left = (x - pointerWidth/2) + 'px';
+        }
+
 
         function loadCities() {
             var xmlhttp = new XMLHttpRequest();
@@ -102,6 +188,9 @@
         }
 
         loadCities();
+        pointer = document.getElementById('id-pointer');
+        input = document.getElementById('id-input_city');
+        select = document.getElementById('id-select_city');
     </script>
 </body>
 </html>
